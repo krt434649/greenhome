@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>綠ＧＭap</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 0;
+            background-color: #e8fce3;
+            overflow: hidden; /* 禁用滾動 */
+        }
+
+        .header {
+            width: 100%;
+            /* padding-top: 5px; */
+            background-color: #779d79;
+            color: white;
+            text-align: center;
+            box-sizing: border-box;
+            font-size: 24px;
+        }
+
+        .header h1 {
+            color: white;
+            text-decoration: none;
+            margin-left: 20px;
+        }
+
+        .all {
+            height: 520px;
+            width: 90%;
+            border-top: 1px solid rgb(74, 94, 76);
+            border-left: 1px solid rgb(74, 94, 76);
+            border-bottom: 1px solid rgb(74, 94, 76);
+            border-top-left-radius: 1.5rem;
+            border-bottom-left-radius: 1.5rem;
+            position: relative;
+            top: 30px;
+            background-color: rgb(189, 224, 187);
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            grid-template-rows: auto;
+            gap: 20px;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .store {
+            background-color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .store img {
+            width: 100%;
+            height: 100%;
+            object-fit: fill;
+        }
+
+        .store1, .store2 {
+            height: 130px;
+            width: 150px;
+            grid-column: 5 / span 2;
+            transform: rotate(90deg);
+        }
+
+        .arrow-container {
+            grid-column: 5 / span 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .arrow {
+            width: 0;
+            height: 0;
+            border-style: solid;
+            border-width: 0 25px 30px 25px;
+            border-color: transparent transparent #fefefe transparent;
+            cursor: pointer;
+            transform: rotate(450deg);
+            z-index: 1;
+        }
+
+        #map {
+            width: 100%;
+            height: 100%;
+        }
+
+        .person {
+            cursor: pointer;
+            fill: blue;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.4);
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .start-button {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding: 20px 40px;
+            font-size: 24px;
+            background-color: rgb(74, 94, 76);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            z-index: 2;
+        }
+
+        .instructions {
+            position: absolute;
+            top: 475px;
+            right: 8px;
+            padding: 8px;
+            font-size: 14px;
+            width: 140px;
+            height: 10px;
+            background-color: rgba(240, 255, 237, 0.5);
+            color: #546155;
+            border-radius: 5px;
+            display: none;
+            text-align: center;
+            align-items: center;
+        }
+
+        .dialog {
+            position: absolute;
+            top: 50px;
+            left: 150px;
+            padding: 10px;
+            background-color: white;
+            border: 1px solid #888;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            font-size: 32px;
+            z-index: 3;
+        }
+
+        .map-instructions {
+            display: flex;
+            position: absolute;
+            top: -40px;
+            width: 100%;
+            text-align: center;
+            font-size: 16px;
+            color: black;
+            padding: 10px;
+            left: 0;
+        }
+
+        .stamp-button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: rgb(74, 94, 76);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .navbar {
+           
+           position: fixed;
+           top: 0;
+           left: 0;
+           width: 100%;
+           padding: 10px 20px;
+           box-sizing: border-box;
+           z-index: 1000;
+       }
+       .navbar .logo {
+           float: left;
+           margin-right: 20px;
+       }
+       .navbar .logo img {
+           width: 70px;
+           height: 70px;
+           border-radius: 50%;
+           transition: transform 0.3s;
+           cursor: pointer;
+       }
+       .navbar .logo img:hover {
+           transform: scale(1.1);
+       }
+       .navbar .dropdown {
+           display: none;
+           position: absolute;
+           top: 60px;
+           left: 0;
+           background-color: #333;
+           box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+           z-index: 1;
+       }
+       .navbar .dropdown a {
+           color: white;
+           padding: 12px 16px;
+           text-decoration: none;
+           display: block;
+           background-color: #333;
+       }
+       .navbar .dropdown a:hover {
+           background-color: #575757;
+       }
+       .navbar .logo:hover .dropdown {
+           display: block;
+       }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <div class="logo">
+            <img src="G章.png" alt="LOGO">
+            <div class="dropdown">
+                <a href="index.html">首頁</a>
+                <a href="sdg12.html">SDG 12</a>
+                <a href="map.html">綠G map</a>
+                <a href="Achievements.html">成就</a>
+                <a href="collect.html">來G章</a>
+                <a href="member.html">成員介紹</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="header">
+        <h1>綠 G Map</h1>
+    </div>
+
+    <div class="all">
+        <div class="arrow-container">
+            <a href="map.html" class="arrow"></a>
+        </div>        
+        
+        <div class="store store1" data-event="參加「大吸一口」活動，鼓勵使用環保吸管（例如不銹鋼吸管或竹製吸管）" data-env="享受豆花加量不加價" data-reward="一點">
+            <img src="./MapPic/888.jpg" alt="阿水伯豆花">
+        </div>
+        <div class="store store2" data-event=" 參加「綠色飲料日」，每週三提供無塑膠杯飲品，凡自備環保杯，可享優惠" data-env="可享飲料加料免費" data-reward="一點">
+            <img src="./MapPic/999.jpg" alt="夏日橙果">
+        </div>
+        <div class="map-instructions">圓圈碰到店家會跳出活動內容喔，快來參加集章活動吧！</div>
+
+        <svg width="100%" height="100%" style="position: absolute; top: 0; left: 0;">
+            <circle id="person" class="person" cx="630" cy="260" r="15"></circle>
+        </svg>
+    
+        <button class="start-button" id="startGameButton">開始遊戲</button>
+        <div class="instructions" id="instructions"></div>
+        
+    </div>
+
+    <!-- Modal -->
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2 id="store-name"></h2>
+            <p id="store-event"></p>
+            <p id="store-env"></p>
+            <p id="store-reward"></p>
+            <button class="stamp-button" onclick="window.location.href='Achievements.html'">前往集章</button>
+        </div>
+    </div>    
+
+    <script>
+        const step = 10;
+        const person = document.getElementById('person');
+        const modal = document.getElementById("myModal");
+        const span = document.getElementsByClassName("close")[0];
+        const storeName = document.getElementById("store-name");
+        const storeEvent = document.getElementById("store-event");
+        const storeEnv = document.getElementById("store-env");
+        const storeReward = document.getElementById("store-reward");
+        const startGameButton = document.getElementById('startGameButton');
+        const instructions = document.getElementById('instructions');
+        const dialog = document.querySelector('.dialog');
+        let gameStarted = false;
+        let currentStore = null;
+
+        person.addEventListener('click', () => {
+            dialog.style.display = 'none';
+        });
+
+        function movePerson(dx, dy) {
+            if (!gameStarted) return;
+
+            let x = parseFloat(person.getAttribute('cx')) + dx;
+            let y = parseFloat(person.getAttribute('cy')) + dy;
+
+            // Check for collisions with the boundary of the SVG
+            if (x - parseFloat(person.getAttribute('r')) < 0 || x + parseFloat(person.getAttribute('r')) > document.documentElement.clientWidth) return;
+            if (y - parseFloat(person.getAttribute('r')) < 0 || y + parseFloat(person.getAttribute('r')) > document.documentElement.clientHeight) return;
+
+            person.setAttribute('cx', x);
+            person.setAttribute('cy', y);
+
+            checkCollisions();
+        }
+
+        function checkCollisions() {
+            const stores = document.getElementsByClassName('store');
+            const personRect = person.getBoundingClientRect();
+            let collisionDetected = false;
+
+            Array.from(stores).forEach(store => {
+                const storeRect = store.getBoundingClientRect();
+                if (!(personRect.right < storeRect.left ||
+                      personRect.left > storeRect.right ||
+                      personRect.bottom < storeRect.top ||
+                      personRect.top > storeRect.bottom)) {
+                    storeName.textContent = store.querySelector('img').alt;
+                    storeEvent.textContent = `環保活動：${store.getAttribute('data-event')}`;
+                    storeEnv.textContent = `優惠活動：${store.getAttribute('data-env')}`;
+                    storeReward.textContent = `集章獎勵：${store.getAttribute('data-reward')}`;
+                    modal.style.display = "block";
+                    currentStore = store;
+                    collisionDetected = true;
+                }
+            });
+
+            if (collisionDetected && currentStore) {
+                storeName.innerText = currentStore.querySelector('img').alt;
+                storeEvent.innerText = currentStore.getAttribute('data-event');
+                storeEnv.innerText = currentStore.getAttribute('data-env');
+                storeReward.innerText = currentStore.getAttribute('data-reward');
+                modal.style.display = "block";
+            }
+        }
+
+        document.addEventListener('keydown', (event) => {
+            switch (event.key) {
+                case 'ArrowUp':
+                    movePerson(0, -step);
+                    break;
+                case 'ArrowDown':
+                    movePerson(0, step);
+                    break;
+                case 'ArrowLeft':
+                    movePerson(-step, 0);
+                    break;
+                case 'ArrowRight':
+                    movePerson(step, 0);
+                    break;
+            }
+        });
+
+        span.onclick = function() {
+            modal.style.display = "none";
+        }
+
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+
+        startGameButton.addEventListener('click', () => {
+            gameStarted = true;
+            startGameButton.style.display = 'none';
+            instructions.style.display = 'block';
+            instructions.innerText = '使用箭頭鍵移動圓圈！';
+        });
+    </script>
+</body>
+</html>

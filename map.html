@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>綠ＧＭap</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 0;
+            background-color: #e8fce3;
+            overflow: hidden; /* 禁用滾動 */
+        }
+
+        .header {
+            width: 100%;
+            /* padding-top: 5px; */
+            background-color: #779d79;
+            color: white;
+            text-align: center;
+            box-sizing: border-box;
+            font-size: 24px;
+        }
+
+        .header h1 {
+            color: white;
+            text-decoration: none;
+            margin-left: 20px;
+        }
+
+        .all {
+            height: 520px;
+            width: 90%;
+            border-top: 1px solid rgb(74, 94, 76);
+            border-right: 1px solid rgb(74, 94, 76);
+            border-bottom: 1px solid rgb(74, 94, 76);
+            border-top-right-radius: 1.5rem;
+            border-bottom-right-radius: 1.5rem;
+            position: relative;
+            top: 30px;
+            background-color: rgb(189, 224, 187);
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            grid-template-rows: auto;
+            gap: 20px;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .store {
+            background-color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .store img {
+            width: 100%;
+            height: 100%;
+            object-fit: fill;
+        }
+
+        .store1, .store2, .store3, .store4, .store5 {
+            height: 130px;
+            width: 150px;
+            gap: 30px;
+        }
+
+        .store6, .store7 {
+            height: 130px;
+            width: 150px;
+            grid-column: 1 / span 1;
+        }
+
+        .arrow-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .arrow {
+            width: 0;
+            height: 0;
+            border-style: solid;
+            border-width: 0 25px 30px 25px;
+            border-color: transparent transparent #fefefe transparent;
+            cursor: pointer;
+            transform: rotate(270deg);
+            z-index: 1;
+        }
+
+        #map {
+            width: 100%;
+            height: 100%;
+        }
+
+        .person {
+            cursor: pointer;
+            fill: blue;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.4);
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .start-button {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding: 20px 40px;
+            font-size: 24px;
+            background-color: rgb(45, 75, 40);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            z-index: 2;
+        }
+
+        .instructions {
+            position: absolute;
+            top: 475px;
+            right: 8px;
+            padding: 8px;
+            font-size: 14px;
+            width: 140px;
+            height: 10px;
+            background-color: rgba(240, 255, 237, 0.5);
+            color: #546155;
+            border-radius: 5px;
+            display: none;
+            text-align: center;
+            align-items: center;
+        }
+
+        .dialog {
+            position: absolute;
+            top: 50px;
+            left: 150px;
+            padding: 10px;
+            background-color: white;
+            border: 1px solid #888;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            font-size: 32px;
+            z-index: 3;
+        }
+
+        .map-instructions {
+            display: flex;
+            position: absolute;
+            top: -40px;
+            width: 100%;
+            text-align: center;
+            font-size: 16px;
+            color: black;
+            padding: 10px;
+            left: 0;
+        }
+
+        .stamp-button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: rgb(74, 94, 76);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .navbar {
+           
+           position: fixed;
+           top: 0;
+           left: 0;
+           width: 100%;
+           padding: 10px 20px;
+           box-sizing: border-box;
+           z-index: 1000;
+       }
+       .navbar .logo {
+           float: left;
+           margin-right: 20px;
+       }
+       .navbar .logo img {
+           width: 70px;
+           height: 70px;
+           border-radius: 50%;
+           transition: transform 0.3s;
+           cursor: pointer;
+       }
+       .navbar .logo img:hover {
+           transform: scale(1.1);
+       }
+       .navbar .dropdown {
+           display: none;
+           position: absolute;
+           top: 60px;
+           left: 0;
+           background-color: #333;
+           box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+           z-index: 1;
+       }
+       .navbar .dropdown a {
+           color: white;
+           padding: 12px 16px;
+           text-decoration: none;
+           display: block;
+           background-color: #333;
+       }
+       .navbar .dropdown a:hover {
+           background-color: #575757;
+       }
+       .navbar .logo:hover .dropdown {
+           display: block;
+       }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <div class="logo">
+            <img src="G章.png" alt="LOGO">
+            <div class="dropdown">
+                <a href="index.html">首頁</a>
+                <a href="sdg12.html">SDG 12</a>
+                <a href="map.html">綠 G map</a>
+                <a href="Achievements.html">成就</a>
+                <a href="collect.html">來G章</a>
+                <a href="member.html">成員介紹</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="header">
+        <h1>綠 G Map</h1>
+    </div>
+
+    <div class="all">
+        <div class="store store1"  data-event="參加「義手手機，一手優惠」活動，推廣無紙化菜單，使用手機掃描QRcode點餐（不使用紙本菜單點餐）" data-env="享受菜單上的任意菜品95折優惠"  data-reward="一點">
+            <img src="./MapPic/555.jpg" alt="義之坊">
+        </div>
+        <div class="store store2"  data-event="參加「蜀園結帳，優惠蜀不完」活動，使用電子載具結帳，可享優惠" data-env="任意餐點贈送紅茶乙杯"  data-reward="一點">
+            <img src="./MapPic/444.png" alt="蜀園川味小吃">
+        </div>
+        <div class="store store3"  data-event="參加「一起丼吃丼」活動，惜時點餐。凡點任意丼飯選擇「飯少」，可享優惠" data-env="任意丼飯加送小菜一份"  data-reward="一點">
+            <img src="./MapPic/333.png" alt="玉食屋">
+        </div>
+        <div class="store store4"  data-event="參加「零廚餘挑戰」，光盤行動（吃光所有食物）" data-env="贈送加麵卷乙張，於下次消費可使用拉麵加麵一次免費" data-reward="一點">
+            <img src="./MapPic/222.png" alt="尚軒拉麵">
+        </div>
+        <div class="store store5"  data-event="參加「傳承環保」活動，拒絕一次性餐具，自備可重複使用的餐具" data-env="使用綠色能源"  data-reward="一點">
+            <img src="./MapPic/111.png" alt="傳承古早味">
+        </div>
+        <div class="arrow-container">
+            <a href="map2.html" class="arrow"></a>
+        </div>        
+        <div class="store store6"  data-event="參加「我有自備A容器」活動，外帶自備容器" data-env="可享加麵一次免費 或25元以內加料任選" data-reward="一點">
+            <img src="./MapPic/666.png" alt="A華滷味">
+        </div>
+        <div class="store store7"  data-event="參加「環保廚房」活動，外帶使用環保便當盒（如竹纖維或玻璃便當盒）" data-env="享受菜單上的任意菜品9折優惠" data-reward="一點">
+            <img src="./MapPic/777.jpg" alt="好食廚房">
+        </div>
+        <div>
+            <div class="map-instructions">圓圈碰到店家會跳出活動內容喔，快來參加集章活動吧！</div>
+
+            <svg width="100%" height="100%" style="position: absolute; top: 0; left: 0;">
+                <circle id="person" class="person" cx="630" cy="260" r="15"></circle>
+            </svg>
+        </div>
+    
+        <button class="start-button" id="startGameButton">開始遊戲</button>
+        <div class="instructions" id="instructions"></div>
+        
+    </div>
+
+    <!-- Modal -->
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2 id="store-name"></h2>
+            <p id="store-event"></p>
+            <p id="store-env"></p>
+            <p id="store-reward"></p>
+            <button class="stamp-button" onclick="window.location.href='Achievements.html'">前往集章</button>
+        </div>
+    </div>    
+
+    <script>
+        const step = 10;
+        const person = document.getElementById('person');
+        const modal = document.getElementById("myModal");
+        const span = document.getElementsByClassName("close")[0];
+        const storeName = document.getElementById("store-name");
+        const storeEvent = document.getElementById("store-event");
+        const storeEnv = document.getElementById("store-env");
+        const storeReward = document.getElementById("store-reward");
+        const startGameButton = document.getElementById('startGameButton');
+        const instructions = document.getElementById('instructions');
+        const dialog = document.querySelector('.dialog');
+        let gameStarted = false;
+        let currentStore = null;
+
+        person.addEventListener('click', () => {
+            dialog.style.display = 'none';
+        });
+
+        function movePerson(dx, dy) {
+            if (!gameStarted) return;
+
+            let x = parseFloat(person.getAttribute('cx')) + dx;
+            let y = parseFloat(person.getAttribute('cy')) + dy;
+
+            // Check for collisions with the boundary of the SVG
+            if (x - parseFloat(person.getAttribute('r')) < 0 || x + parseFloat(person.getAttribute('r')) > document.documentElement.clientWidth) return;
+            if (y - parseFloat(person.getAttribute('r')) < 0 || y + parseFloat(person.getAttribute('r')) > document.documentElement.clientHeight) return;
+
+            person.setAttribute('cx', x);
+            person.setAttribute('cy', y);
+
+            checkCollisions();
+        }
+
+        function checkCollisions() {
+            const stores = document.getElementsByClassName('store');
+            const personRect = person.getBoundingClientRect();
+            let collisionDetected = false;
+
+            Array.from(stores).forEach(store => {
+                const storeRect = store.getBoundingClientRect();
+                if (!(personRect.right < storeRect.left ||
+                      personRect.left > storeRect.right ||
+                      personRect.bottom < storeRect.top ||
+                      personRect.top > storeRect.bottom)) {
+                    storeName.textContent = store.querySelector('img').alt;
+                    storeEvent.textContent = `環保活動：${store.getAttribute('data-event')}`;
+                    storeEnv.textContent = `優惠活動：${store.getAttribute('data-env')}`;
+                    storeReward.textContent = `集章獎勵：${store.getAttribute('data-reward')}`;
+                    modal.style.display = "block";
+                    currentStore = store;
+                    collisionDetected = true;
+                }
+            });
+
+            if (!collisionDetected && currentStore) {
+                modal.style.display = "none";
+                currentStore = null;
+            }
+        }
+
+        document.addEventListener('keydown', (event) => {
+            switch(event.key) {
+                case 'ArrowUp':
+                    movePerson(0, -step);
+                    break;
+                case 'ArrowDown':
+                    movePerson(0, step);
+                    break;
+                case 'ArrowLeft':
+                    movePerson(-step, 0);
+                    break;
+                case 'ArrowRight':
+                    movePerson(step, 0);
+                    break;
+            }
+        });
+
+        span.onclick = function() {
+            modal.style.display = "none";
+            currentStore = null;
+        }
+
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+                currentStore = null;
+            }
+        }
+
+        startGameButton.addEventListener('click', () => {
+            gameStarted = true;
+            startGameButton.style.display = 'none';
+            instructions.style.display = 'block';
+            instructions.innerText = '使用箭頭鍵移動圓圈！';
+        });
+    </script>
+</body>
+</html>

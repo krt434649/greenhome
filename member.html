@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>成員介紹 - SDG12 環保網站</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: #e8f5e9;
+        }
+        .container {
+            max-width: 800px;
+            margin: 80px auto 20px;
+            padding: 20px;
+            text-align: center;
+        }
+        .member {
+            display: inline-block;
+            margin: 20px;
+            cursor: pointer;
+            width: 350px;
+            height: 350px;
+        }
+        .member img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            transition: transform 0.3s;
+        }
+        .member img:hover {
+            transform: scale(1.1);
+        }
+        .member h3 {
+            margin: 10px 0 5px;
+            color: #388e3c;
+        }
+        .member p {
+            color: #4caf50;
+        }
+        /* Modal Styles */
+        .modal {
+            display: none; 
+            position: fixed; 
+            z-index: 1; 
+            left: 0;
+            top: 0;
+            width: 100%; 
+            height: 100%; 
+            overflow: auto; 
+            background-color: rgb(0,0,0); 
+            background-color: rgba(0,0,0,0.4); 
+            padding-top: 60px;
+        }
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 500px;
+            border-radius: 10px;
+            text-align: left;
+        }
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        /* Navbar Styles */
+        .navbar {
+           
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 10px 20px;
+            box-sizing: border-box;
+            z-index: 1000;
+        }
+        .navbar .logo {
+            float: left;
+            margin-right: 20px;
+        }
+        .navbar .logo img {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            transition: transform 0.3s;
+            cursor: pointer;
+        }
+        .navbar .logo img:hover {
+            transform: scale(1.1);
+        }
+        .navbar .dropdown {
+            display: none;
+            position: absolute;
+            top: 60px;
+            left: 0;
+            background-color: #333;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+            z-index: 1;
+        }
+        .navbar .dropdown a {
+            color: white;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            background-color: #333;
+        }
+        .navbar .dropdown a:hover {
+            background-color: #575757;
+        }
+        .navbar .logo:hover .dropdown {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <div class="logo">
+            <img src="G章.png" alt="LOGO">
+            <div class="dropdown">
+                <a href="index.html">首頁</a>
+                <a href="sdg12.html">SDG 12</a>
+                <a href="map.html">綠G map</a>
+                <a href="Achievements.html">成就</a>
+                <a href="collect.html">來G章</a>
+                <a href="member.html">成員介紹</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <h1>成員介紹</h1>
+        <div class="member" onclick="openModal(0)">
+            <img src="./infoPic/L.jpg" alt="成員1">
+            <h3>1111806 林承頡</h3>
+            <p>點擊查看更多</p>
+        </div>
+        <div class="member" onclick="openModal(1)">
+            <img src="./infoPic/M.jpg" alt="成員2">
+            <h3>1111810 江語檬</h3>
+            <p>點擊查看更多</p>
+        </div>
+        <div class="member" onclick="openModal(2)">
+            <img src="./infoPic/W.jpg" alt="成員3">
+            <h3>1111811 王祐綺</h3>
+            <p>點擊查看更多</p>
+        </div>
+        <div class="member" onclick="openModal(3)">
+            <img src="./infoPic/Y.jpg" alt="成員4">
+            <h3>1111813 楊蓁蓁</h3>
+            <p>點擊查看更多</p>
+        </div>
+        <!-- 可以根據需要添加更多成員 -->
+    </div>
+
+    <!-- The Modal -->
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2 id="modal-title">成員詳細介紹</h2>
+            <img id="modal-image" src="" alt="成員圖片" style="width:100%; border-radius:10px;">
+            <p id="modal-text">這是成員的詳細介紹內容。</p>
+        </div>
+    </div>
+
+    <script>
+        var members = [
+            {
+                name: '林承頡',
+                image: './infoPic/L.jpg',
+                details: '系所：資訊傳播學系 | 年級：2A | 負責內容：製作主頁面及成就頁面'
+            },
+            {
+                name: '江語檬',
+                image: './infoPic/M.jpg',
+                details: '系所：資訊傳播學系 | 年級：2A | 負責內容：Logo設計、頁面排版設計，製作成員分頁'
+            },
+            {
+                name: '王祐綺',
+                image: './infoPic/W.jpg',
+                details: '系所：資訊傳播學系 | 年級：2A | 負責內容：製作地圖分頁、集章分頁'
+            },
+            {
+                name: '楊蓁蓁',
+                image: './infoPic/Y.jpg',
+                details: '系所：資訊傳播學系 | 年級：2A | 負責內容：製作SDGs12介紹分頁、成員分頁'
+            }
+        ];
+
+        function openModal(index) {
+            var modal = document.getElementById('myModal');
+            var modalTitle = document.getElementById('modal-title');
+            var modalImage = document.getElementById('modal-image');
+            var modalText = document.getElementById('modal-text');
+
+            modalTitle.innerText = members[index].name;
+            modalImage.src = members[index].image;
+            modalText.innerText = members[index].details;
+
+            modal.style.display = 'block';
+        }
+
+        function closeModal() {
+            var modal = document.getElementById('myModal');
+            modal.style.display = 'none';
+        }
+
+        window.onclick = function(event) {
+            var modal = document.getElementById('myModal');
+            if (event.target == modal) {
+                modal.style.display = 'none';
+            }
+        }
+    </script>
+</body>
+</html>

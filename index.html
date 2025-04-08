@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>綠居人</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: #b4d1b6;
+        }
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+            background-image: url('https://example.com/eco-background.jpg'); /* Replace with a relevant background image URL */
+            background-size: cover;
+            background-position: center;
+        }
+        .container.active {
+            opacity: 1;
+        }
+        .logo {
+            width: 150px; /* 調整這裡來使logo更小 */
+            height: 150px; /* 調整這裡來使logo更小 */
+            cursor: pointer;
+            text-align: center;
+            transition: transform 0.3s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .logo img {
+            max-width: 100%;
+            max-height: 100%;
+        }
+        .logo:hover {
+            transform: scale(1.05);
+        }
+        #next-page {
+            display: none;
+            padding: 20px;
+            text-align: center;
+        }
+        #next-page.active {
+            display: block;
+        }
+        nav {
+            margin-top: 20px;
+        }
+        nav a {
+            margin: 0 10px;
+            color: #388e3c;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        nav a:hover {
+            color: #2e7d32;
+        }
+        h2 {
+            color: #6b9168;
+            font-size: 40px;
+        }
+        p {
+            color: rgb(230, 246, 231);
+            font-size: 23px;
+            margin-top: -10px;
+        }
+        .menu-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 20px;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+        }
+        .menu-button {
+            background-color: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: none;
+            border-radius: 180px;
+            padding: 10px 20px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            font-size: 1.5em;
+            display: flex;
+            align-items: center;
+        }
+        .menu-button:hover {
+            background-color: #9fbda1;
+        }
+        .menu-content {
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+            padding: 20px;
+            text-align: center;
+            border-radius: 10px;
+            background-color: rgb(230, 246, 231);
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 80%; /* 調整選單寬度 */
+            margin: 20px auto; /* 將選單置中 */
+            max-width: 600px; /* 最大寬度 */
+        }
+        .menu-content.active {
+            opacity: 1;
+        }
+        .menu-title {
+            font-size: 1.5em;
+            margin-bottom: 10px;
+            color: #388e3c;
+        }
+        .menu-image {
+            max-width: 250px;
+            height: 250px;
+            border-radius: 10px;
+            /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); */
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div id="home-page" class="container">
+        <div class="logo" onclick="goToNextPage()"><img src="./綠居人logo.png" alt="綠居人logo"></div>
+    </div>
+    <div id="next-page">
+        <h2>綠居人</h2>
+        <p id="welcome-text">這裡是有關可持續消費和生產的相關信息和資源。</p>
+        <div class="menu-container">
+            <button class="menu-button" onclick="prevPage()">&#9664;</button>
+            <div id="menu-content" class="menu-content">
+                <div class="menu-title">首頁</div>
+                <a href="home.html">
+                    <img src="images/home.jpg" alt="首頁圖片" class="menu-image">
+                </a>
+            </div>
+            <button class="menu-button" onclick="nextPage()">&#9654;</button>
+        </div>
+    </div>
+    <script>
+        window.onload = function() {
+            document.getElementById('home-page').classList.add('active');
+        };
+
+        function goToNextPage() {
+            var homePage = document.getElementById('home-page');
+            homePage.classList.remove('active');
+            setTimeout(function() {
+                homePage.style.display = 'none';
+                var nextPage = document.getElementById('next-page');
+                nextPage.classList.add('active');
+                showPage(currentPage);
+            }, 1000);
+        }
+
+        var currentPage = 0;
+        var pages = [
+            { title: 'SDG 12', content: '關於 SDG 12 ......', url: 'sdg12.html', image: 'sdg12.d.png' },
+            { title: '綠 G Map', content: '綠 G Map 環保小遊戲', url: 'map.html', image: 'G Map.png' },
+            { title: '成就', content: '參加小遊戲，解鎖環保成就！', url: 'Achievements.html', image: '成就.png' },
+            { title: '來 G 章', content: '一起做環保，集章贏獎勵！', url: 'collect.html', image: 'G章.png' },
+            { title: '小組成員介紹', content: '小組成員介紹', url: 'member.html', image: 'member.png' },
+        ];
+
+        function showPage(index) {
+            var menuContent = document.getElementById('menu-content');
+            var welcomeText = document.getElementById('welcome-text');
+            menuContent.style.opacity = 0;
+            setTimeout(function() {
+                document.title = `綠居人`;
+                welcomeText.innerText = pages[index].content;
+                menuContent.innerHTML = `
+                    <div class="menu-title">${pages[index].title}</div>
+                    <a href="${pages[index].url}">
+                        <img src="${pages[index].image}" alt="${pages[index].title}" class="menu-image">
+                    </a>`;
+                menuContent.style.opacity = 1;
+            }, 300);
+        }
+
+        function prevPage() {
+            currentPage = (currentPage === 0) ? pages.length - 1 : currentPage - 1;
+            showPage(currentPage);
+        }
+
+        function nextPage() {
+            currentPage = (currentPage === pages.length - 1) ? 0 : currentPage + 1;
+            showPage(currentPage);
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            showPage(currentPage);
+        });
+    </script>
+</body>
+</html>

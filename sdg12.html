@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SDG12 責任消費及生產</title>
+    <meta name="description" content="確保永續的消費與生產模式，達成SDG12目標，保護地球資源。">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            color: #333;
+            background-color: #f4f4f4;
+        }
+        .container {
+            width: 80%;
+            margin: auto;
+            overflow: hidden;
+        }
+        header {
+            background: #779d79;
+            color: #fff;
+            padding-top: 30px;
+            min-height: 80px;
+            border-bottom: #def1cb 3px solid;
+            text-align: center;
+        }
+        header h1 {
+            margin: 0;
+            padding: 0;
+            font-size: 35px;
+        }
+        section {
+            padding: 20px;
+        }
+        .sdg12-intro {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+        .sdg12-intro img {
+            max-width: 40%;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .sdg12-intro p {
+            flex: 1;
+            margin-left: 20px;
+        }
+        h1 {
+            font-size: 30px;
+        }
+
+        p {
+            font-size: 20px;
+            padding: 50px;
+            margin-left: 20px;
+            color: #546155;
+        }
+
+        .targets {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: space-between;
+        }
+        .target {
+            background: #def1cb;
+            box-sizing: border-box;
+            border-radius: 1em;
+            margin-bottom: 10px;
+            flex: 1 1 calc(25% - 10px);
+            aspect-ratio: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            cursor: pointer;
+            position: relative;
+            perspective: 1000px;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+        }
+        .target:hover {
+            transform: rotateY(180deg);
+        }
+        .target h1, .target h2, .target p {
+            margin: 0;
+            color: #546155;
+        }
+        .target p {
+            margin-top: 25px;
+            font-size: 16px;
+            padding: 5px;
+        }
+        .target .front, .target .back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            border-radius: 1em;
+        }
+        .target .back {
+            transform: rotateY(180deg);
+            background: #fff;
+            padding: 15px;
+            border-left: #779d79 8px solid;
+            text-align: left;
+            justify-content: flex-start;
+        }
+        .target .back img {
+            max-width: 35%;
+            margin-right: 10px;
+            margin-top: 25px;
+            float: left;
+            border-radius: 0.5em;
+        }
+        .target .back p {
+            margin-left: 0;
+            padding-left: 10px;
+        }
+        footer {
+            background: #779d79;
+            text-align: center;
+            padding: 30px 0;
+            margin-top: 20px;
+        }
+        footer p {
+            color: #f0ffec;
+        }
+        @media (max-width: 768px) {
+            .target {
+                flex: 1 1 calc(50% - 10px);
+            }
+        }
+        @media (max-width: 480px) {
+            .target {
+                flex: 1 1 100%;
+            }
+        }
+
+        .navbar {
+           
+           position: fixed;
+           top: 0;
+           left: 0;
+           width: 100%;
+           padding: 10px 20px;
+           box-sizing: border-box;
+           z-index: 1000;
+       }
+       .navbar .logo {
+           float: left;
+           margin-right: 20px;
+       }
+       .navbar .logo img {
+           width: 70px;
+           height: 70px;
+           border-radius: 50%;
+           transition: transform 0.3s;
+           cursor: pointer;
+       }
+       .navbar .logo img:hover {
+           transform: scale(1.1);
+       }
+       .navbar .dropdown {
+           display: none;
+           position: absolute;
+           top: 60px;
+           left: 0;
+           background-color: #333;
+           box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+           z-index: 1;
+       }
+       .navbar .dropdown a {
+           color: white;
+           padding: 12px 16px;
+           text-decoration: none;
+           display: block;
+           background-color: #333;
+       }
+       .navbar .dropdown a:hover {
+           background-color: #575757;
+       }
+       .navbar .logo:hover .dropdown {
+           display: block;
+       }
+    </style>
+</head>
+<body>
+
+    <div class="navbar">
+        <div class="logo">
+            <img src="G章.png" alt="LOGO">
+            <div class="dropdown">
+                <a href="index.html">首頁</a>
+                <a href="sdg12.html">SDG 12</a>
+                <a href="map.html">綠G map</a>
+                <a href="Achievements.html">成就</a>
+                <a href="collect.html">來G章</a>
+                <a href="member.html">成員介紹</a>
+            </div>
+        </div>
+    </div>
+
+    <header>
+        <h1>SDG12 責任消費及生產</h1>
+    </header>
+    <section class="container">
+        <h1>「SDG 12」是甚麼？</h1>
+        <div class="sdg12-intro">
+            <img src="./sdg12.png" alt="SDG 12照片">
+            <p>確保永續的消費與生產模式是我們當前的一項重要挑戰。地球為我們提供了豐富的自然資源，但我們並未負責任地利用它們，消費遠超過地球所能承受的範圍。學會以可持續的方式使用和生產，是扭轉我們對地球造成的損害的關鍵。SDG 12旨在促進永續消費與生產，包括資源效率、化學品和廢物管理、減少食物浪費等。這些目標不僅涉及個人和企業的行為，還需要政策和國際合作以實現全球可持續發展目標。</p>
+        </div>
+        
+        <h2>細項目標（Targets）</h2>
+        
+        <div class="targets">
+            <div class="target" aria-expanded="false" role="button" tabindex="0">
+                <div class="front">
+                    <h1>12.1</h1>
+                    <h2>實施10YEP</h2>
+                </div>
+                <div class="back">
+                    <img src="./sdg12/12.1.png" alt="圖片1">
+                    <p>由已開發國家帶頭，動員所有國家執行「永續消費與生產十年計畫架構（10YEP）」，並考量開發中國家的發展和能力。</p>
+                </div>
+            </div>
+            <div class="target" aria-expanded="false" role="button" tabindex="0">
+                <div class="front">
+                    <h1>12.2</h1>
+                    <h2>自然資源的永續管理和利用</h2>
+                </div>
+                <div class="back">
+                    <img src="./sdg12/12.2.png" alt="圖片2">
+                    <p>2030年前，實現自然資源的永續管理以及高效使用。</p>
+                </div>
+            </div>
+            <div class="target" aria-expanded="false" role="button" tabindex="0">
+                <div class="front">
+                    <h1>12.3</h1>
+                    <h2>全球人均食物浪費减半</h2>
+                </div>
+                <div class="back">
+                    <img src="./sdg12/12.3.png" alt="圖片3">
+                    <p>2030年前，將零售和消費者方面的全球人均糧食浪費減半，並減少生產與供應鏈上的糧食損失，包括收割後損失。</p>
+                </div>
+            </div>
+            <div class="target" aria-expanded="false" role="button" tabindex="0">
+                <div class="front">
+                    <h1>12.4</h1>
+                    <h2>負責化學品和廢物的管理</h2>
+                </div>
+                <div class="back">
+                    <img src="./sdg12/12.4.png" alt="圖片4">
+                    <p>2020年前，根據國際協議的框架，在化學品與廢棄物的生命週期中，以對環境無害的方式妥善管理，並大幅減少其排入大氣、滲漏至水和土壤中的機率，降低對人類健康和環境的負面影響。</p>
+                </div>
+            </div>
+            <div class="target" aria-expanded="false" role="button" tabindex="0">
+                <div class="front">
+                    <h1>12.5</h1>
+                    <h2>大幅度减少廢物產生</h2>
+                </div>
+                <div class="back">
+                    <img src="./sdg12/12.5.png" alt="圖片5">
+                    <p>2030年前，透過預防、減量、回收和再利用，大幅減少廢棄物產生。</p>
+                </div>
+            </div>
+            <div class="target" aria-expanded="false" role="button" tabindex="0">
+                <div class="front">
+                    <h1>12.6</h1>
+                    <h2>鼓勵公司採用永續做法和永續報告</h2>
+                </div>
+                <div class="back">
+                    <img src="./sdg12/12.6.png" alt="圖片6">
+                    <p>鼓勵企業採用永續作法，特別是大型企業和跨國公司，並將永續發展資訊融入公司營運計畫中。</p>
+                </div>
+            </div>
+            <div class="target" aria-expanded="false" role="button" tabindex="0">
+                <div class="front">
+                    <h1>12.7</h1>
+                    <h2>促進永續的公共採購做法</h2>
+                </div>
+                <div class="back">
+                    <img src="./sdg12/12.7.png" alt="圖片7">
+                    <p>依據國家政策和優先事項，推動永續性的公共採購流程。</p>
+                </div>
+            </div>
+            <div class="target" aria-expanded="false" role="button" tabindex="0">
+                <div class="front">
+                    <h1>12.8</h1>
+                    <h2>促進對永續生活方式的普遍理解</h2>
+                </div>
+                <div class="back">
+                    <img src="./sdg12/12.8.png" alt="圖片8">
+                    <p>2030年前，確保各地人民都能具有永續發展的相關資訊和意識，以及與自然和諧共處的生活模式。</p>
+                </div>
+            </div>
+            <div class="target" aria-expanded="false" role="button" tabindex="0">
+                <div class="front">
+                    <h1>12.a</h1>
+                    <h2>支持開發中國家永續消費和生產的科技能力</h2>
+                </div>
+                <div class="back">
+                    <img src="./sdg12/12.A.png" alt="圖片9">
+                    <p>支援開發中國家強化科技能力，以推動更可持續的消費和生產模式。</p>
+                </div>
+            </div>
+            <div class="target" aria-expanded="false" role="button" tabindex="0">
+                <div class="front">
+                    <h1>12.b</h1>
+                    <h2>發展與永續旅遊有關的工具</h2>
+                </div>
+                <div class="back">
+                    <img src="./sdg12/12.B.png" alt="圖片10">
+                    <p>發展並推廣永續旅遊的監測工具，有助於創造就業並促進當地文化和產品。</p>
+                </div>
+            </div>
+            <div class="target" aria-expanded="false" role="button" tabindex="0">
+                <div class="front">
+                    <h1>12.c</h1>
+                    <h2>合理化化石燃料補貼</h2>
+                </div>
+                <div class="back">
+                    <img src="./sdg12/12C.png" alt="圖片11">
+                    <p>理順對化石燃料的低效補貼，消除市場扭曲，依照國家情況重新配置稅收和補貼，並保障貧困和受影響社群的利益。</p>
+                </div>
+            </div>
+            <div class="target">
+                <div class="front">
+                    <img src="./sdg12.png" alt="SDG12 Logo">
+                </div>
+            </div>
+        </div>
+    </section>
+    <footer>
+        <p>SDG12 責任消費及生產 | 2024</p>
+    </footer>
+</body>
+</html>

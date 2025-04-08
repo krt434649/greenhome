@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>集章換獎勵 - SDG12 環保網站</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: #e8f5e9;
+            text-align: center;
+        }
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+        .menu {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+        }
+        .menu select {
+            padding: 8px;
+            font-size: 1em;
+        }
+        .stamp-card {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        
+        .stamp {
+            width: 80px;
+            height: 80px;
+            margin: 10px;
+            border: 2px solid #388e3c;
+            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 2em;
+            color: #388e3c;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s;
+            position: relative;
+        }
+
+        .stamp img {
+            max-width: 100%;
+            max-height: 100%;
+            width: auto;
+            height: auto;
+            max-width: 60px;
+            max-height: 60px;
+        }
+
+        .stamp.collected {
+            background-color: #c5dcc6;
+            color: #fff;
+            transform: scale(1.1);
+        }
+        #reward-message {
+            margin-top: 20px;
+            font-size: 1.5em;
+            color: #4caf50;
+            display: none;
+        }
+        #reward-btn {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #388e3c;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.2em;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        #reward-btn:disabled {
+            background-color: #a5d6a7;
+            cursor: not-allowed;
+        }
+        #reward-btn:hover:enabled {
+            background-color: #2e7d32;
+        }
+
+        .navbar {
+           
+           position: fixed;
+           top: 0;
+           left: 0;
+           width: 100%;
+           padding: 10px 20px;
+           box-sizing: border-box;
+           z-index: 1000;
+       }
+       .navbar .logo {
+           float: left;
+           margin-right: 20px;
+       }
+       .navbar .logo img {
+           width: 70px;
+           height: 70px;
+           border-radius: 50%;
+           transition: transform 0.3s;
+           cursor: pointer;
+       }
+       .navbar .logo img:hover {
+           transform: scale(1.1);
+       }
+       .navbar .dropdown {
+           display: none;
+           position: absolute;
+           top: 60px;
+           left: 0;
+           background-color: #333;
+           box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+           z-index: 1;
+       }
+       .navbar .dropdown a {
+           color: white;
+           padding: 12px 16px;
+           text-decoration: none;
+           display: block;
+           background-color: #333;
+       }
+       .navbar .dropdown a:hover {
+           background-color: #575757;
+       }
+       .navbar .logo:hover .dropdown {
+           display: block;
+       }
+    </style>
+</head>
+<body>
+
+    <div class="navbar">
+        <div class="logo">
+            <img src="G章.png" alt="LOGO">
+            <div class="dropdown">
+                <a href="index.html">首頁</a>
+                <a href="sdg12.html">SDG 12</a>
+                <a href="map.html">綠G map</a>
+                <a href="Achievements.html">成就</a>
+                <a href="collect.html">來G章</a>
+                <a href="member.html">成員介紹</a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="container">
+        <h1>集章換獎勵</h1>
+        <p>完成成就來收集印章，收集滿 9 個印章可以兌換獎勵！</p>
+        <div class="stamp-card" id="stamp-card">
+            <!-- 9個印章格 -->
+            <div class="stamp" data-id="1"><img src="./綠居人logo.png" alt="印章"></div>
+            <div class="stamp" data-id="2"><img src="./綠居人logo.png" alt="印章"></div>
+            <div class="stamp" data-id="3"><img src="./綠居人logo.png" alt="印章"></div>
+            <div class="stamp" data-id="4"><img src="./綠居人logo.png" alt="印章"></div>
+            <div class="stamp" data-id="5"><img src="./綠居人logo.png" alt="印章"></div>
+            <div class="stamp" data-id="6"><img src="./綠居人logo.png" alt="印章"></div>
+            <div class="stamp" data-id="7"><img src="./綠居人logo.png" alt="印章"></div>
+            <div class="stamp" data-id="8"><img src="./綠居人logo.png" alt="印章"></div>
+            <div class="stamp" data-id="9"><img src="./綠居人logo.png" alt="印章"></div>
+        </div>
+        <button id="reward-btn" onclick="redeemReward()" disabled>兌換獎勵</button>
+        <p id="reward-message">恭喜！您已成功兌換獎勵！</p>
+        <button onclick="openAchievements()">查看成就</button>
+    </div>
+    <script>
+        const stamps = document.querySelectorAll('.stamp');
+        let collectedStamps = 0;
+
+        // 初始化页面时检查成就状态
+        checkAchievements();
+
+        function checkAchievements() {
+            for (let i = 1; i <= stamps.length; i++) {
+                if (localStorage.getItem('achievement' + i) === 'completed' && !stamps[i-1].classList.contains('collected')) {
+                    stamps[i-1].classList.add('collected');
+                    collectedStamps++;
+                    if (collectedStamps === stamps.length) {
+                        showAllStampImages(); // 如果所有成就都达成，显示所有图像
+                    } else {
+                        setStampImage(stamps[i-1]); // 显示对应成就的图像
+                    }
+                }
+            }
+            checkReward();
+        }
+
+        function checkReward() {
+            const rewardBtn = document.getElementById('reward-btn');
+            rewardBtn.disabled = collectedStamps !== stamps.length;
+        }
+
+        function redeemReward() {
+            if (collectedStamps === stamps.length) {
+                document.getElementById('reward-message').style.display = 'block';
+                resetStamps(); // 自动重置印章
+                resetAchievements(); // 重置成就状态
+            }
+        }
+
+        function resetStamps() {
+            stamps.forEach(stamp => {
+                stamp.classList.remove('collected');
+                stamp.innerHTML = ''; // 清空印章内容
+            });
+            collectedStamps = 0;
+            document.getElementById('reward-message').style.display = 'none';
+            hideAllStampImages(); // 重置后隐藏所有图像
+            checkReward(); // 重置后更新按钮状态
+        }
+
+        function resetAchievements() {
+            for (let i = 1; i <= stamps.length; i++) {
+                localStorage.removeItem('achievement' + i);
+            }
+            checkAchievements(); // 更新成就状态
+        }
+
+        function setStampImage(stamp) {
+            const imgUrl = '綠居人logo.png'; // 替换为您希望显示的 LOGO 图片路径
+            const img = document.createElement('img');
+            img.src = imgUrl;
+            img.alt = '印章';
+            stamp.innerHTML = ''; // 清空印章内容
+            stamp.appendChild(img); // 添加图片到印章中
+        }
+
+        function showAllStampImages() {
+            stamps.forEach(stamp => {
+                setStampImage(stamp); // 显示固定的 LOGO 图片
+            });
+        }
+
+        function hideAllStampImages() {
+            stamps.forEach(stamp => {
+                stamp.innerHTML = ''; // 清空印章内容
+            });
+        }
+
+        function openAchievements() {
+            window.open('achievements.html', 'achievements', 'width=800,height=600');
+        }
+    </script>
+</body>
+</html>

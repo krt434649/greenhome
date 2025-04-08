@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>成就列表 - SDG12 環保網站</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: #e8f5e9;
+            text-align: center;
+        }
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .achievement {
+            margin: 10px;
+            padding: 10px;
+            border: 2px solid #388e3c;
+            border-radius: 5px;
+            background-color: #f1f8e9;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            text-align: left;
+            position: relative;
+        }
+        .achievement.completed {
+            background-color: #c8e6c9;
+        }
+        .complete-btn {
+            margin-top: 10px;
+            padding: 5px 10px;
+            background-color: #388e3c;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .complete-btn:hover {
+            background-color: #2e7d32;
+        }
+
+        .navbar {
+           
+           position: fixed;
+           top: 0;
+           left: 0;
+           width: 100%;
+           padding: 10px 20px;
+           box-sizing: border-box;
+           z-index: 1000;
+       }
+       .navbar .logo {
+           float: left;
+           margin-right: 20px;
+       }
+       .navbar .logo img {
+           width: 70px;
+           height: 70px;
+           border-radius: 50%;
+           transition: transform 0.3s;
+           cursor: pointer;
+       }
+       .navbar .logo img:hover {
+           transform: scale(1.1);
+       }
+       .navbar .dropdown {
+           display: none;
+           position: absolute;
+           top: 60px;
+           left: 0;
+           background-color: #333;
+           box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+           z-index: 1;
+       }
+       .navbar .dropdown a {
+           color: white;
+           padding: 12px 16px;
+           text-decoration: none;
+           display: block;
+           background-color: #333;
+       }
+       .navbar .dropdown a:hover {
+           background-color: #575757;
+       }
+       .navbar .logo:hover .dropdown {
+           display: block;
+       }
+    </style>
+</head>
+<body>
+
+    <div class="navbar">
+        <div class="logo">
+            <img src="G章.png" alt="LOGO">
+            <div class="dropdown">
+                <a href="index.html">首頁</a>
+                <a href="sdg12.html">SDG 12</a>
+                <a href="map.html">綠G map</a>
+                <a href="Achievements.html">成就</a>
+                <a href="collect.html">來G章</a>
+                <a href="member.html">成員介紹</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <h1>成就列表</h1>
+        <div class="achievement" data-id="1">
+            <div class="achievement-title">參加「我有自備A容器」活動，外帶自備容器</div>
+            <button class="complete-btn" onclick="completeAchievement(1)">達成</button>
+        </div>
+        <div class="achievement" data-id="2">
+            <div class="achievement-title">參加「環保廚房」活動，外帶使用環保便當盒（如竹纖維或玻璃便當盒）</div>
+            <button class="complete-btn" onclick="completeAchievement(2)">達成</button>
+        </div>
+        <div class="achievement" data-id="3">
+            <div class="achievement-title">參加「傳承環保」活動，拒絕一次性餐具，自備可重複使用的餐具</div>
+            <button class="complete-btn" onclick="completeAchievement(3)">達成</button>
+        </div>
+        <div class="achievement" data-id="4">
+            <div class="achievement-title">參加「零廚餘挑戰」，光盤行動（吃光所有食物）</div>
+            <button class="complete-btn" onclick="completeAchievement(4)">達成</button>
+        </div>
+        <div class="achievement" data-id="5">
+            <div class="achievement-title">參加「一起丼吃丼」活動，惜時點餐</div>
+            <button class="complete-btn" onclick="completeAchievement(5)">達成</button>
+        </div>
+        <div class="achievement" data-id="6">
+            <div class="achievement-title">參加「蜀園結帳，優惠蜀不完」活動，使用電子載具結帳</div>
+            <button class="complete-btn" onclick="completeAchievement(6)">達成</button>
+        </div>
+        <div class="achievement" data-id="7">
+            <div class="achievement-title">參加「義手手機，一手優惠」活動，使用手機掃描QRcode點餐（不使用紙本菜單點餐）</div>
+            <button class="complete-btn" onclick="completeAchievement(7)">達成</button>
+        </div>
+        <div class="achievement" data-id="8">
+            <div class="achievement-title">參加「大吸一口」活動，使用環保吸管（例如不銹鋼吸管或竹製吸管）</div>
+            <button class="complete-btn" onclick="completeAchievement(8)">達成</button>
+        </div>
+        <div class="achievement" data-id="9">
+            <div class="achievement-title">參加「綠色飲料日」，每週三提供無塑膠杯飲品，凡自備環保杯，可享優惠</div>
+            <button class="complete-btn" onclick="completeAchievement(9)">達成</button>
+        </div>
+    </div>
+    <script>
+        function completeAchievement(id) {
+            if (!localStorage.getItem('achievement' + id)) {
+                localStorage.setItem('achievement' + id, 'completed');
+                document.querySelector(`.achievement[data-id="${id}"]`).classList.add('completed');
+                addPoint();
+                showAchievementMessage(id);
+                window.opener.checkAchievements();
+            }
+        }
+
+        function addPoint() {
+            let points = localStorage.getItem('points');
+            points = points ? parseInt(points) : 0;
+            localStorage.setItem('points', points + 1);
+        }
+
+        function showAchievementMessage(id) {
+            const achievementTitle = document.querySelector(`.achievement[data-id="${id}"] .achievement-title`).textContent;
+            alert(`恭喜達成：${achievementTitle}`);
+        }
+
+        function checkAchievements() {
+            for (let i = 1; i <= 9; i++) {
+                if (localStorage.getItem('achievement' + i) === 'completed') {
+                    document.querySelector(`.achievement[data-id="${i}"]`).classList.add('completed');
+                }
+            }
+        }
+
+        window.onload = checkAchievements;
+    </script>
+</body>
+</html>
